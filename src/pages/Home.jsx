@@ -2,8 +2,10 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from "react";
 import styled from "styled-components"
-import { addTodo, doneTodo, deleteTodo, cancleTodo } from "../redux/modules/todo";
+import { addTodo } from "../redux/modules/todo";
 import { useNavigate } from 'react-router-dom';
+import Done from '../components/Done';
+import Working from '../components/Working';
 
 function Home() {
 
@@ -53,23 +55,8 @@ function Home() {
           {/* todo의 중에서 isDone이 false 것만 뽑고, map으로 그려줌!
               >> 카드 완료 누른 순서대로 안들어감! */}
           {todo.filter((item) => { return item.isDone === false }).map((item) => (
-            <CardLayout key={item.id}>
-              <Constent>
-                <Detail onClick={() => {
-                  navigate('/detail');
-                }}>상세보기</Detail>
-                <p>{item.title}</p>
-                <p>{item.content}</p>
-              </Constent>
-              <CardBtnWrap>
-                <CardBtn bordercolor="red" onClick={() => {
-                  dispatch(deleteTodo(item.id))
-                }}>삭제</CardBtn>
-                <CardBtn bordercolor="green" onClick={() => {
-                  dispatch(doneTodo(item.id))
-                }}>완료</CardBtn>
-              </CardBtnWrap>
-            </CardLayout>
+            <Working key={item.id} item={item} />
+            // Home 정보값 Working 컴퍼넌트로 내려주기(props) 
           ))}
         </CardZone>
 
@@ -78,23 +65,8 @@ function Home() {
           {/* todo의 중에서 isDone이 true 것만 뽑고, map으로 그려줌!
               >> 카드 완료 누른 순서대로 안들어감! */}
           {todo.filter((item) => { return item.isDone === true }).map((item) => (
-            <CardLayout key={item.id}>
-              <Constent>
-                <Detail onClick={() => {
-                  navigate('/detail');
-                }}>상세보기</Detail>
-                <p>{item.title}</p>
-                <p>{item.content}</p>
-              </Constent>
-              <CardBtnWrap>
-                <CardBtn bordercolor="red" onClick={() => {
-                  dispatch(deleteTodo(item.id))
-                }}>삭제</CardBtn>
-                <CardBtn bordercolor="green" onClick={() => {
-                  dispatch(cancleTodo(item.id))
-                }}>취소</CardBtn>
-              </CardBtnWrap>
-            </CardLayout>
+            <Done key={item.id} item={item} />
+            // Home 정보값 Done 컴퍼넌트로 내려주기(props) 
           ))}
         </CardZone>
       </Main>
@@ -103,10 +75,6 @@ function Home() {
 
   )
 }
-
-
-
-
 
 const InputZone = styled.div`
   height: 80px;
@@ -142,46 +110,5 @@ const CardZone = styled.div`
   display: flex;
   flex-wrap: wrap;
 `
-const CardLayout = styled.div`
-  width: 250px;
-  height: 230px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  padding: 0 20px;
-  border: 3px solid green;
-  border-radius: 10px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-const Constent = styled.div`
-  width: 100%;
-  height: 160px;
-  display: flex;
-  margin-bottom: 10px;
-  flex-direction: column;
-  align-items: flex-start;
-`
 
-const Detail = styled.button`
-  margin: 21px 0px 9px 0px;
-  background-color: white;
-  border-radius: 6px;
-  border: 1px solid grey;
-  cursor: pointer;
-`
-
-const CardBtnWrap = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`
-const CardBtn = styled.button`
-  width: 115px;
-  height: 40px;
-  border: 2px solid ${(props) => props.bordercolor};
-  border-radius: 8px;
-  background-color: transparent;
-  cursor: pointer;
-`
 export default Home
