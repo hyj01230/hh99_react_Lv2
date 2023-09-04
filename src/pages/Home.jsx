@@ -1,51 +1,114 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useState } from "react";
 import styled from "styled-components"
+import { addTodo, doneTodo, deleteTodo, cancleTodo } from "../redux/modules/todo";
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
-    return (
-        <Wrap>
-            {/* 상단바 구역 */}
-            <Nav>
-                <Nav_P>My Todo List</Nav_P>
-                <Nav_P>React</Nav_P>
-            </Nav>
 
-            {/* 인풋 구역 */}
-            <InputZone>
-                <InputWrap>
-                    제목 <input />
-                    내용 <input />
-                </InputWrap>
-                <InputBtn>추가하기</InputBtn>
-            </InputZone>
+  // useSelector(리덕스 훅) = Store에 접근하여, todo 값을 읽어오기
+  // useSelector()에서 () 안에 매개변수로 콜백함수가 들어감!
+  // state: store 안에 있는 state 전체를 말함
+  const todo = useSelector((state) => {
+    return state.todo;
+  });
+  // console.log(todo)
 
-            {/* 카드 구역 */}
-            <Main>
-                <CardZoneName>Working..🔥</CardZoneName>
-                <CardZone>
-                    <CardLayout>
-                        <Constent>
-                            <Detail>상세보기</Detail>
-                            <p>렙2</p>
-                            <p>어렵습니다..ㅜㅜ</p>
-                        </Constent>
-                        <CardBtnWrap>
-                            <CardBtn borderColor="red">삭제</CardBtn>
-                            <CardBtn borderColor="green">완료</CardBtn>
-                        </CardBtnWrap>
-                    </CardLayout>
-                </CardZone>
+  const dispatch = useDispatch();
 
-                <CardZoneName>Done..!🎉</CardZoneName>
-                <CardZone>
+  // input 입력값
+  const [inputTitle, setInputTitle] = useState("")
+  const [inputContents, setInputContents] = useState("")
 
-                </CardZone>
-            </Main>
-        </Wrap>
-    )
+  // input 값 변경될 때
+  const onChangeTitleHandler = (evet) => { setInputTitle(evet.target.value); }
+  const onChangeContentsHandler = (evet) => { setInputContents(evet.target.value) }
+
+  // 
+  const navigate = useNavigate();
+
+  return (
+    <Wrap>
+      {/* 상단바 구역 */}
+      <Nav>
+        <Nav_P>My Todo List</Nav_P>
+        <Nav_P>React</Nav_P>
+      </Nav>
+
+      {/* 인풋 구역 */}
+      <InputZone>
+        <InputWrap>
+          제목 <input value={inputTitle} onChange={onChangeTitleHandler} />
+          내용 <input value={inputContents} onChange={onChangeContentsHandler} />
+        </InputWrap>
+        <InputBtn onClick={() => {
+          dispatch(addTodo({ inputTitle, inputContents }));
+          // ★dispatch(액션 생성자 함수 이름)({addTodo의 payload에 객체 형태로 들어갈 데이터})
+          // dispatch가 스토어에 던짐!
+          // 스토어는 액션 타입에 따라 state를 변경해줌!
+          setInputTitle('')
+          setInputContents('')
+        }}>추가하기</InputBtn>
+      </InputZone>
+
+      {/* 카드 구역 */}
+      <Main>
+        <CardZoneName>Working..🔥</CardZoneName>
+        <CardZone>
+          {/* todo의 중에서 isDone이 false 것만 뽑고, map으로 그려줌!
+              >> 카드 완료 누른 순서대로 안들어감! */}
+          {todo.filter((item) => { return item.isDone === false }).map((item) => (
+            <CardLayout key={item.id}>
+              <Constent>
+                <Detail onClick={() => {
+                  navigate('/detail');
+                }}>상세보기</Detail>
+                <p>{item.title}</p>
+                <p>{item.content}</p>
+              </Constent>
+              <CardBtnWrap>
+                <CardBtn bordercolor="red" onClick={() => {
+                  dispatch(deleteTodo(item.id))
+                }}>삭제</CardBtn>
+                <CardBtn bordercolor="green" onClick={() => {
+                  dispatch(doneTodo(item.id))
+                }}>완료</CardBtn>
+              </CardBtnWrap>
+            </CardLayout>
+          ))}
+        </CardZone>
+
+        <CardZoneName>Done..!🎉</CardZoneName>
+        <CardZone>
+          {/* todo의 중에서 isDone이 true 것만 뽑고, map으로 그려줌!
+              >> 카드 완료 누른 순서대로 안들어감! */}
+          {todo.filter((item) => { return item.isDone === true }).map((item) => (
+            <CardLayout key={item.id}>
+              <Constent>
+              <Detail onClick={() => {
+                  navigate('/detail');
+                }}>상세보기</Detail>
+                <p>{item.title}</p>
+                <p>{item.content}</p>
+              </Constent>
+              <CardBtnWrap>
+                <CardBtn bordercolor="red" onClick={() => {
+                  dispatch(deleteTodo(item.id))
+                }}>삭제</CardBtn>
+                <CardBtn bordercolor="green" onClick={() => {
+                  dispatch(cancleTodo(item.id))
+                }}>취소</CardBtn>
+              </CardBtnWrap>
+            </CardLayout>
+          ))}
+        </CardZone>
+      </Main>
+    </Wrap>
+  )
 }
 
-export default Home
+
 
 const Wrap = styled.div`
 text-align: center;
@@ -121,6 +184,7 @@ const Detail = styled.button`
   background-color: white;
   border-radius: 6px;
   border: 1px solid grey;
+  cursor: pointer;
 `
 
 const CardBtnWrap = styled.div`
@@ -131,8 +195,9 @@ const CardBtnWrap = styled.div`
 const CardBtn = styled.button`
   width: 115px;
   height: 40px;
-  border: 2px solid ${(props) => props.borderColor};
+  border: 2px solid ${(props) => props.bordercolor};
   border-radius: 8px;
   background-color: transparent;
   cursor: pointer;
 `
+export default Home
