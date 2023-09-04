@@ -7,6 +7,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Layout>
+        {/* 레이아웃 밑 부분이 Layout.js 페이지의 {children}으로 들어가서 렌더링됨 */}
         <Routes>
           <Route path="/" element={<Home />} />
           {/* <Route path="detail" element={<Detail />} /> */}
