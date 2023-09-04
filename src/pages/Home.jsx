@@ -29,13 +29,7 @@ function Home() {
   const navigate = useNavigate();
 
   return (
-    <Wrap>
-      {/* 상단바 구역 */}
-      <Nav>
-        <Nav_P>My Todo List</Nav_P>
-        <Nav_P>React</Nav_P>
-      </Nav>
-
+    <div>
       {/* 인풋 구역 */}
       <InputZone>
         <InputWrap>
@@ -86,7 +80,7 @@ function Home() {
           {todo.filter((item) => { return item.isDone === true }).map((item) => (
             <CardLayout key={item.id}>
               <Constent>
-              <Detail onClick={() => {
+                <Detail onClick={() => {
                   navigate('/detail');
                 }}>상세보기</Detail>
                 <p>{item.title}</p>
@@ -104,26 +98,16 @@ function Home() {
           ))}
         </CardZone>
       </Main>
-    </Wrap>
+    </div>
+
+
   )
 }
 
 
 
-const Wrap = styled.div`
-text-align: center;
-  min-width: 800px;
-  max-width: 1200px;
-  margin: 0 auto;
-`
-const Nav = styled.header`
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid gray;
-`
-const Nav_P = styled.p`
-  margin: 15px;
-`
+
+
 const InputZone = styled.div`
   height: 80px;
   display: flex;
