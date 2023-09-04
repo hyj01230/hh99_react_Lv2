@@ -9,7 +9,9 @@ const Router = () => {
       {/* <Layout> */}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="detail" element={<Detail />} />
+          {/* <Route path="detail" element={<Detail />} /> */}
+          {/* 삭제해도 문제없음! 밑에 주소로 연결되어있기 떄문에!!*/}
+          <Route path="detail/:id" element={<Detail />} />
         </Routes>
       {/* </Layout> */}
     </BrowserRouter>

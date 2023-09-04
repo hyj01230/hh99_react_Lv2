@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useState } from "react";
 import styled from "styled-components"
 import { addTodo } from "../redux/modules/todo";
-import { useNavigate } from 'react-router-dom';
 import Done from '../components/Done';
 import Working from '../components/Working';
 
@@ -26,9 +25,6 @@ function Home() {
   // input 값 변경될 때
   const onChangeTitleHandler = (evet) => { setInputTitle(evet.target.value); }
   const onChangeContentsHandler = (evet) => { setInputContents(evet.target.value) }
-
-  // 
-  const navigate = useNavigate();
 
   return (
     <div>

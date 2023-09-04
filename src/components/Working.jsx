@@ -1,21 +1,20 @@
 import React from 'react'
 import styled from "styled-components"
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import { doneTodo, deleteTodo } from "../redux/modules/todo";
+import { Link } from 'react-router-dom';
 
 // Home에서 내려준 item props 전달받기
 const Working = ({ item }) => {
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   return (
     <WorkingCardLayout key={item.id}>
       <Constent>
-        <Detail onClick={() => {
-          navigate('/detail');
-        }}>상세보기</Detail>
+        <Link to={`/detail/${item.id}`}>
+          <Detail>상세보기</Detail>
+        </Link>
         <p>{item.title}</p>
         <p>{item.content}</p>
       </Constent>

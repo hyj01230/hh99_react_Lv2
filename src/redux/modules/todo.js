@@ -43,18 +43,17 @@ export const cancleTodo = (id) => {
 // useState로 쓰면 : const [todo, setTodo] = useState("")
 const initialState = [
     {
-        id: 0,
+        id: 1,
         title: "투두리스트",
-        content: "추가하기 버튼 성공!!",
+        content: "완성하기!!!",
         isDone: false
     },
     {
-        id: 1,
-        title: "삭제/완료/취소 버튼",
-        content: "도전중~~~~~",
+        id: 2,
+        title: "성공입니다",
+        content: "👏👏👏",
         isDone: true
     }
-
 ]
 
 // 리듀서 : 'state의 변화를 일으키는' 함수!
